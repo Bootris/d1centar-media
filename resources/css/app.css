@@ -1,0 +1,318 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    /* d1centar — nezavisni lokalni medij, Niš.
+       Token names are kept (navy/bronze/cream/ink) but remapped to the
+       d1centar system: ink base, warm paper, brand green accent. */
+    --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+
+    /* Ink — dark surfaces (was navy) */
+    --color-navy-950: #0c0c0e;
+    --color-navy-900: #141417;
+    --color-navy-800: #1e1e22;
+    --color-navy-700: #2b2b31;
+    --color-navy-200: #b7b5ad;
+    --color-navy-100: #d9d6cd;
+
+    /* Brand green — accent (was bronze). 500 = the D1 logo green */
+    --color-bronze-700: #4c7139;
+    --color-bronze-600: #5c8a47;
+    --color-bronze-500: #6e9e56;
+    --color-bronze-400: #88b671;
+    --color-bronze-300: #a8cd94;
+    --color-bronze-200: #c9dfbc;
+    --color-bronze-100: #e7efe0;
+
+    /* Paper — warm off-white (was cream) */
+    --color-cream-50: #f7f5ef;
+    --color-cream-100: #f2efe8;
+    --color-cream-200: #e9e5db;
+    --color-cream-300: #dbd5c7;
+
+    /* Ink text */
+    --color-ink-900: #1a1a16;
+    --color-ink-700: #33322b;
+    --color-ink-600: #57534c;
+    --color-ink-400: #8a857b;
+
+    /* Signal red — used only for the UŽIVO live dot */
+    --color-signal: #ea3323;
+}
+
+/* ---------------------------------------------------------------- */
+/* Base                                                              */
+/* ---------------------------------------------------------------- */
+
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* ---------------------------------------------------------------- */
+/* Reveal-on-scroll                                                  */
+/* ---------------------------------------------------------------- */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* Staggered children */
+.reveal-group > * {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal-group.is-visible > * {
+    opacity: 1;
+    transform: none;
+}
+
+.reveal-group.is-visible > *:nth-child(2) { transition-delay: 0.1s; }
+.reveal-group.is-visible > *:nth-child(3) { transition-delay: 0.2s; }
+.reveal-group.is-visible > *:nth-child(4) { transition-delay: 0.3s; }
+.reveal-group.is-visible > *:nth-child(5) { transition-delay: 0.4s; }
+.reveal-group.is-visible > *:nth-child(6) { transition-delay: 0.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-group > * {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/* ---------------------------------------------------------------- */
+/* Article / rich-text typography                                    */
+/* ---------------------------------------------------------------- */
+
+.prose-law {
+    color: var(--color-ink-700);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+}
+
+.prose-law > * + * {
+    margin-top: 1.1em;
+}
+
+.prose-law h1,
+.prose-law h2,
+.prose-law h3,
+.prose-law h4 {
+    font-family: var(--font-display);
+    color: var(--color-navy-900);
+    line-height: 1.25;
+    margin-top: 1.8em;
+}
+
+.prose-law h1 { font-size: 1.9rem; }
+.prose-law h2 { font-size: 1.55rem; }
+.prose-law h3 { font-size: 1.3rem; }
+.prose-law h4 { font-size: 1.15rem; }
+
+.prose-law a {
+    color: var(--color-bronze-600);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.prose-law a:hover {
+    color: var(--color-bronze-700);
+}
+
+.prose-law strong {
+    color: var(--color-ink-900);
+}
+
+.prose-law ul,
+.prose-law ol {
+    padding-inline-start: 1.5em;
+}
+
+.prose-law ul { list-style: disc; }
+.prose-law ol { list-style: decimal; }
+
+.prose-law li + li {
+    margin-top: 0.4em;
+}
+
+.prose-law blockquote {
+    border-inline-start: 3px solid var(--color-bronze-500);
+    padding: 0.4em 0 0.4em 1.25em;
+    font-family: var(--font-display);
+    font-size: 1.2em;
+    font-style: italic;
+    color: var(--color-navy-800);
+}
+
+.prose-law img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+}
+
+.prose-law hr {
+    border-color: var(--color-cream-300);
+    margin-block: 2em;
+}
+
+/* ---------------------------------------------------------------- */
+/* Decorative                                                        */
+/* ---------------------------------------------------------------- */
+
+/* Fine-line grid texture for dark hero surfaces */
+.bg-hero-lines {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 56px 56px;
+}
+
+/* Oversized section symbol used as a hero watermark */
+.hero-mark {
+    font-family: var(--font-display);
+    line-height: 0.8;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* ---------------------------------------------------------------- */
+/* d1centar signature                                                */
+/* ---------------------------------------------------------------- */
+
+/* Live "UŽIVO" dot, broadcast pulse */
+.live-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--color-signal);
+    box-shadow: 0 0 0 0 rgba(234, 51, 35, 0.6);
+    animation: live-pulse 2s infinite;
+}
+
+@keyframes live-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(234, 51, 35, 0.55); }
+    70%  { box-shadow: 0 0 0 8px rgba(234, 51, 35, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(234, 51, 35, 0); }
+}
+
+/* Latest-headlines ticker (news crawl) */
+.ticker-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+
+.ticker-track {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: ticker 34s linear infinite;
+}
+
+@keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+
+/* Oversized outline wordmark used as a hero/footer visual element */
+.wordmark-ghost {
+    font-family: var(--font-display);
+    font-weight: 900;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.09);
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Duotone "photo/video" placeholder for cards without an uploaded image */
+.film {
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(200deg, #24302a, #101413 72%);
+    overflow: hidden;
+}
+
+.film::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.45;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+.film-green { background: linear-gradient(200deg, #2c3d2a, #0f130f 72%); }
+.film-warm  { background: linear-gradient(200deg, #3a3324, #14110a 72%); }
+.film-cool  { background: linear-gradient(200deg, #263038, #101418 72%); }
+
+/* Play affordance ring for video items */
+.play-ring {
+    display: grid;
+    place-items: center;
+    border-radius: 9999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.play-ring::after {
+    content: "";
+    margin-left: 3px;
+    border-style: solid;
+    border-width: 7px 0 7px 12px;
+    border-color: transparent transparent transparent #fff;
+}
+
+.group:hover .play-ring {
+    background: var(--color-bronze-500);
+    border-color: var(--color-bronze-500);
+    transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .live-dot,
+    .ticker-track { animation: none; }
+}
+
+/* Article prose in the d1centar voice: serif lead, green links */
+.prose-law h1,
+.prose-law h2,
+.prose-law h3,
+.prose-law h4 {
+    letter-spacing: -0.01em;
+}
