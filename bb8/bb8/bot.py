@@ -16,6 +16,7 @@ from telegram.ext import (
     ContextTypes,
     filters,
 )
+from telegram.error import TelegramError
 
 load_dotenv()
 
@@ -74,9 +75,30 @@ async def on_message(update: Update, _ctx: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text(f"⚠️ Puklo je: {exc}")
 
 
+async def _on_startup(app: Application) -> None:
+    """Kad se bot upali, javi vlasniku na Telegram da je online."""
+    chat_id = os.environ.get("BB8_OWNER_CHAT_ID", "").strip()
+    if not chat_id:
+        return
+    try:
+        await app.bot.send_message(
+            chat_id=int(chat_id),
+            text="🤖 BB8 je online i spreman za deploy.\n"
+            "Napiši npr.: „deploy d1centar-media na d1centar.jci.rs",
+        )
+    except TelegramError as exc:
+        # Najčešće: vlasnik još nije kliknuo Start na botu.
+        log.warning("Ne mogu da javim vlasniku (%s). Klikni /start na botu.", exc)
+
+
 def main() -> None:
     token = os.environ["TELEGRAM_BOT_TOKEN"]
-    app = Application.builder().token(token).build()
+    app = (
+        Application.builder()
+        .token(token)
+        .post_init(_on_startup)
+        .build()
+    )
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_message))
     log.info("BB8 je online. Odobreni ID-jevi: %s", ALLOWED or "(nijedan!)")

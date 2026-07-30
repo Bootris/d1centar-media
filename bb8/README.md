@@ -64,9 +64,16 @@ python -m bb8.bot
 ```
 
 Onda u Telegramu napiši botu `/start` — vrati ti tvoj **Telegram ID**. Ubaci ga
-u `BB8_ALLOWED_USER_IDS` u `.env`, restartuj bota, i probaj:
+u `BB8_ALLOWED_USER_IDS` **i** u `BB8_OWNER_CHAT_ID` u `.env`, restartuj bota, i
+probaj:
 
 > deploy d1centar-media na d1centar.jci.rs
+
+> **„Neka mi se javi na Telegram" (@BBoncic):** Telegram bot ne sme prvi da
+> piše korisniku dok mu taj korisnik jednom ne klikne **Start**. Zato: otvori
+> svog bota u Telegramu, klikni **Start**, uzmi ID koji ti vrati, upiši ga u
+> `BB8_OWNER_CHAT_ID`. Od tada BB8 sam pošalje „online" poruku svaki put kad se
+> upali, i normalno ti odgovara na komande.
 
 ### Na VPS-u kroz Coolify (da bot stalno radi)
 
